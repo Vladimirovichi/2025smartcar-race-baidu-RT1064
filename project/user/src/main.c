@@ -40,6 +40,9 @@
 // 第二步 project->clean  等待下方进度条走完
 
 // 本例程是开源库移植用空工程
+
+#define PIT_CH                  (PIT_CH0 )                                      // 使用的周期中断编号 如果修改 需要同步对应修改周期中断编号与 isr.c 中的调用
+#define PIT_PRIORITY            (PIT_IRQn)                                      // 对应周期中断的中断编号
 int main(void)
 {
     clock_init(SYSTEM_CLOCK_600M);  	// 不可删除
@@ -59,27 +62,40 @@ int main(void)
 		Uart_Init();
 		ICAR_Init();
 		Key_Init();
+		gpio_init(B9, GPO, 1, GPO_PUSH_PULL);//B9初始化为GPIO功能、输出模式、推挽输出
+		pit_ms_init(PIT_CH, 1);                                                  // 初始化 PIT_CH0 为周期中断 1ms 周期
+    interrupt_set_priority(PIT_PRIORITY, 0);                                    // 设置 PIT1 对周期中断的中断优先级为 0
 		
 		// 此处编写用户代码 例如外设初始化代码等
     while(1)
     {
 				Key_Scan();
+				USB_Edgeboard_Handle();
         // 此处编写需要循环执行的代码
-				//encoder_get();
-				//MOTOR_ControlLoop(1.0f);		//闭环速控
+//				encoder_get();
+//				MOTOR_ControlLoop(1.0f);		//闭环速控
 				
 //				oscilloscope_data.data[0] = motorStr.EncoderValue;
 //				oscilloscope_data.data[1] = 0;
 //				oscilloscope_data.data[2] = 0;
 //				oscilloscope_data.data[3] = 0;
 //						
-//        seekfree_assistant_oscilloscope_send(&oscilloscope_data);// 通过无线转串口发送到虚拟示波器上
+//        seekfree_assistant_oscilloscope_send(&oscilloscope_data);// 通过无线转串口发送到虚拟示波器上			
 				
-				
-				
-				system_delay_ms(10);
+//				system_delay_ms(10);
         // 此处编写需要循环执行的代码
     }
 }
 
-
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     PIT 的周期中断处理函数 这个函数将在 PIT 对应的定时器中断调用 详见 isr.c
+// 参数说明     void
+// 返回参数     void
+// 使用示例     pit_handler();
+//-------------------------------------------------------------------------------------------------------------------
+void pit_handler (void)
+{
+    //gpio_toggle_level(B9);                                                              // 周期中断触发
+		MOTOR_Timer();
+		USB_Edgeboard_Timr();
+}
