@@ -4,10 +4,10 @@
 #include "uart.h"
 #include "icar.h"
 
-#define  MOTOR_SPEED_MAX		    10.0f	 	//电机最大转速(m/s) (0.017,8.04)
+#define  MOTOR_SPEED_MAX		    1.5f	 	//电机最大转速(m/s) (0.017,8.04)
 
 #define PWM_CH2                 (PWM1_MODULE3_CHB_D1)
-#define PWM_CH4                 (PWM2_MODULE3_CHB_D3)
+//#define PWM_CH4                 (PWM2_MODULE3_CHB_D3)
 int16 duty = 0;
 
 MotorStruct motorStr;
@@ -23,9 +23,8 @@ extern PIDStruct pidStr;
 void motor_init()
 {
 		pwm_init(PWM_CH2, 17000, 0);// 初始化 PWM 通道 频率 17KHz 初始占空比 0%
-    pwm_init(PWM_CH4, 17000, 0);// 初始化 PWM 通道 频率 17KHz 初始占空比 0%
+		gpio_init(D3, GPO, 1, GPO_PUSH_PULL);//B9初始化为GPIO功能、输出模式、推挽输出
 		pwm_set_duty(PWM_CH2, 0);
-		pwm_set_duty(PWM_CH4, 0);
 		
 		motorStr.EncoderLine = 512.0f; 							//编码器线数=光栅数16*4				
     motorStr.ReductionRatio = 2.7f;							//电机减速比								
@@ -49,8 +48,8 @@ void Set_Pwm(int pwm)//PWM_DUTY_MAX        (10000)
 				{
 						pwm = PWM_DUTY_MAX;
 				}
+				gpio_set_level(D3, 0);
         pwm_set_duty(PWM_CH2, pwm);
-				pwm_set_duty(PWM_CH4, 0);
     }
     else if(pwm < 0)
     {
@@ -62,8 +61,8 @@ void Set_Pwm(int pwm)//PWM_DUTY_MAX        (10000)
 				{
 						pwm = -pwm;
 				}
-				pwm_set_duty(PWM_CH2, 0);
-				pwm_set_duty(PWM_CH4, pwm);
+				gpio_set_level(D3, 1);
+				pwm_set_duty(PWM_CH2, pwm);
     }	
 }
 
@@ -83,7 +82,8 @@ void MOTOR_ControlLoop(float speed)
     
     pidStr.vi_Ref = (float)(speed*MOTOR_CONTROL_CYCLE / motorStr.DiameterWheel / PI * motorStr.EncoderLine * motorStr.ReductionRatio);//没有4倍频 * 4.0f
     
-    Set_Pwm(PID_MoveCalculate(&pidStr));
+		duty = PID_MoveCalculate(&pidStr);
+    Set_Pwm(duty);
 }
 
 /**
@@ -96,7 +96,7 @@ void MOTOR_ControlLoop(float speed)
 void MOTOR_Timer(void)
 {
     motorStr.Counter++;
-    if(motorStr.Counter >= 10)							    //速控:10ms
+    if(motorStr.Counter >= 20)							    //速控:10ms
     {
         encoder_get();								//编码器采样
 

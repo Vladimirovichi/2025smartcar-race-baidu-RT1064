@@ -39,6 +39,6 @@ void encoder_get()
 		motorStr.EncoderValue = RC_encoder1 = (int16_t)RCFilter(encoder1, RC_Encoder1); // µÍÍ¨ÂË²¨
 		pidStr.vi_FeedBack = motorStr.EncoderValue;
 		
-		icarStr.SpeedFeedback = (float)(motorStr.EncoderValue * PI * motorStr.DiameterWheel)/ MOTOR_CONTROL_CYCLE / motorStr.EncoderLine / 4.0f / motorStr.ReductionRatio; //  m/s
+		icarStr.SpeedFeedback = (float)(motorStr.EncoderValue * PI * motorStr.DiameterWheel)/ MOTOR_CONTROL_CYCLE / motorStr.EncoderLine / motorStr.ReductionRatio; /// 4.0f   m/s
 		encoder_clear_count(QTIMER1_ENCODER1);
 }

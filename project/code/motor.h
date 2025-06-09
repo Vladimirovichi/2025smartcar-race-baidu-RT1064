@@ -19,6 +19,7 @@ void motor_init();
 void Set_Pwm(int pwm);//PWM_DUTY_MAX        (10000)
 void MOTOR_ControlLoop(float speed);
 void MOTOR_Timer(void);
+void Set_Pwm(int pwm);
 
 extern MotorStruct motorStr;
 

@@ -134,7 +134,7 @@ void uart_rx_interrupt_handler (void)
                     bint16_Union.U8_Buff[0] = usbStr.receiveBuffFinished[7];
                     bint16_Union.U8_Buff[1] = usbStr.receiveBuffFinished[8];
                     
-                    Servo_Control((float)bint16_Union.U16 / 100);
+                    Servo_Control((float)bint16_Union.U16);
                     icarStr.ServoPwmSet = bint16_Union.U16;         //方向
                     icarStr.SpeedSet = bint32_Union.Float;          //速度				
                 }

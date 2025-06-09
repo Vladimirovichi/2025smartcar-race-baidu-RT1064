@@ -145,7 +145,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGTARM</Key>
-          <Name>(1010=1243,529,1693,1086,0)(6017=105,137,294,473,0)(1008=-1,-1,-1,-1,0)(6016=1662,433,1920,1086,0)</Name>
+          <Name>(1010=1243,523,1693,1080,0)(6017=105,137,294,473,0)(1008=-1,-1,-1,-1,0)(6016=1662,427,1920,1080,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -163,12 +163,42 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pidStr.vi_Ref</ItemText>
+          <ItemText>pidStr.vi_Ref,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
           <ItemText>fifo_get_data,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>icarStr.ServoPwmSet,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>icarStr.SpeedSet,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>icarStr.SpeedFeedback,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pidStr.vi_FeedBack</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pidStr.vl_PreU</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>duty,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

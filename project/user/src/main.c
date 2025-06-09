@@ -62,7 +62,7 @@ int main(void)
 		Uart_Init();
 		ICAR_Init();
 		Key_Init();
-		gpio_init(B9, GPO, 1, GPO_PUSH_PULL);//B9初始化为GPIO功能、输出模式、推挽输出
+		
 		pit_ms_init(PIT_CH, 1);                                                  // 初始化 PIT_CH0 为周期中断 1ms 周期
     interrupt_set_priority(PIT_PRIORITY, 0);                                    // 设置 PIT1 对周期中断的中断优先级为 0
 		
@@ -73,14 +73,14 @@ int main(void)
 				USB_Edgeboard_Handle();
         // 此处编写需要循环执行的代码
 //				encoder_get();
-//				MOTOR_ControlLoop(1.0f);		//闭环速控
-				
-//				oscilloscope_data.data[0] = motorStr.EncoderValue;
-//				oscilloscope_data.data[1] = 0;
-//				oscilloscope_data.data[2] = 0;
-//				oscilloscope_data.data[3] = 0;
-//						
-//        seekfree_assistant_oscilloscope_send(&oscilloscope_data);// 通过无线转串口发送到虚拟示波器上			
+//				MOTOR_ControlLoop(0.5f);		//闭环速控
+//				Set_Pwm(1000);
+				oscilloscope_data.data[0] = motorStr.EncoderValue;
+				oscilloscope_data.data[1] = 0;
+				oscilloscope_data.data[2] = 0;
+				oscilloscope_data.data[3] = 0;
+						
+        seekfree_assistant_oscilloscope_send(&oscilloscope_data);// 通过无线转串口发送到虚拟示波器上			
 				
 //				system_delay_ms(10);
         // 此处编写需要循环执行的代码
